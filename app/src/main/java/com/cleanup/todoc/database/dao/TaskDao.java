@@ -10,15 +10,21 @@ import com.cleanup.todoc.model.Task;
 import java.util.List;
 
 @Dao
-public interface TaskDAO {
+public interface TaskDao {
 
     @Query("SELECT * FROM Task")
-    LiveData<List<Task>> getTask();
+    LiveData<List<Task>> getTaskList();
+
+    @Query("SELECT * FROM Task WHERE id= :taskId")
+    LiveData<Task> getTask(long taskId);
 
     @Insert
-    long insertTask(Task task);
+    void insertTask(Task task);
 
     @Query("DELETE FROM Task WHERE id= :taskId")
     int deleteTask(long taskId);
+
+    @Query("SELECT * FROM Task WHERE projectId= :projectId")
+    LiveData<List<Task>> getTaskListFromProject(long projectId);
 
 }

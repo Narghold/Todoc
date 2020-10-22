@@ -15,10 +15,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -49,8 +47,6 @@ public class ProjectDaoTest {
     private static Project PROJECT_TEST_1 = new Project(PROJECT_ID_1, "PROJECT_TEST_1", 255);
     private static long PROJECT_ID_2 = 2;
     private static Project PROJECT_TEST_2 = new Project(PROJECT_ID_2, "PROJECT_TEST_2", 0);
-
-    //TODO test verfiant qu'il a bien 3 projets dans la BDD
 
     @Test
     public void insertAndGetProject() throws InterruptedException {

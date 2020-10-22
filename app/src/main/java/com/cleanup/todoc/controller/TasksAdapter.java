@@ -1,4 +1,4 @@
-package com.cleanup.todoc.ui;
+package com.cleanup.todoc.controller;
 
 import android.content.res.ColorStateList;
 import android.support.annotation.NonNull;

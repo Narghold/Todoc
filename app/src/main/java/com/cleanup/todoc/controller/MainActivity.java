@@ -1,5 +1,6 @@
-package com.cleanup.todoc.ui;
+package com.cleanup.todoc.controller;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,6 +18,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.cleanup.todoc.DI.DI;
+import com.cleanup.todoc.DI.ViewModelFactory;
 import com.cleanup.todoc.R;
 import com.cleanup.todoc.database.TodocDatabase;
 import com.cleanup.todoc.model.Project;
@@ -31,6 +34,7 @@ import java.util.Date;
  * <p>Displays the list of tasks.</p>
  *
  * @author Gaëtan HERFRAY
+ * @author Yann DUBOIS
  */
 public class MainActivity extends AppCompatActivity implements TasksAdapter.DeleteTaskListener {
     /**
@@ -76,18 +80,15 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     /**
      * The RecyclerView which displays the list of tasks
      */
-    // Suppress warning is safe because variable is initialized in onCreate
-    @SuppressWarnings("NullableProblems")
-    @NonNull
     private RecyclerView listTasks;
 
     /**
      * The TextView displaying the empty state
      */
-    // Suppress warning is safe because variable is initialized in onCreate
-    @SuppressWarnings("NullableProblems")
-    @NonNull
     private TextView lblNoTasks;
+
+    //ViewModel
+    private TaskViewModel taskViewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -95,6 +96,10 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
         //Database
         TodocDatabase.getInstance(this);
+
+        ViewModelFactory viewModelFactory = DI.provideViewModelFactory(this);
+        taskViewModel = ViewModelProviders.of(this, viewModelFactory).get(TaskViewModel.class);
+
 
         setContentView(R.layout.activity_main);
 
@@ -177,7 +182,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
                         new Date().getTime()
                 );
 
-                TodocDatabase.getInstance(this).taskDAO().insertTask(task);
+                //TodocDatabase.getInstance(this).taskDAO().insertTask(task);
                 addTask(task);
 
                 dialogInterface.dismiss();
@@ -215,6 +220,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     private void addTask(@NonNull Task task) {
         tasks.add(task);
         //TODO DAO task
+        this.taskViewModel.createTask(task);
         updateTasks();
     }
 

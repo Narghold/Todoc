@@ -1,5 +1,6 @@
 package com.cleanup.todoc.database;
 
+import androidx.annotation.NonNull;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 import androidx.room.Database;
 import androidx.room.OnConflictStrategy;
@@ -7,6 +8,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.cleanup.todoc.database.dao.ProjectDao;
 import com.cleanup.todoc.database.dao.TaskDao;
@@ -30,6 +32,23 @@ public abstract class TodocDatabase extends RoomDatabase {
                 if (INSTANCE == null){
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             TodocDatabase.class, "TodocBDD.db")
+                            .addCallback(new Callback() {
+                                @Override
+                                public void onCreate(@NonNull SupportSQLiteDatabase db) {
+                                    super.onCreate(db);
+                                    Log.d("Callback" , "Callback passed");
+
+                                    Project[] projectTab = new Project[]{
+                                            new Project("Projet Tartampion", 0xFFEADAD1),
+                                            new Project("Projet Lucidia", 0xFFB4CDBA),
+                                            new Project("Projet Circus", 0xFFA3CED2),
+                                    };
+
+                                    for (Project project : projectTab) {
+                                        INSTANCE.projectDAO().insertProject(project);
+                                    }
+                                }
+                            })
                             .build();
                 }
             }

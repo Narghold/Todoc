@@ -1,5 +1,9 @@
 package com.cleanup.todoc.controller;
 
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -29,6 +33,7 @@ import com.cleanup.todoc.model.Task;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>Home activity of the application which is displayed when the user opens the app.</p>
@@ -102,6 +107,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         ViewModelFactory viewModelFactory = DI.provideViewModelFactory(this);
         taskViewModel = ViewModelProviders.of(this, viewModelFactory).get(TaskViewModel.class);
 
+
         setContentView(R.layout.activity_main);
 
         listTasks = findViewById(R.id.list_tasks);
@@ -109,6 +115,10 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
         listTasks.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         listTasks.setAdapter(adapter);
+
+        this.taskViewModel.getTaskList().observe(this, tasks -> {
+            adapter.updateTasks(tasks);
+        });
 
         findViewById(R.id.fab_add_task).setOnClickListener(view -> showAddTaskDialog());
     }
@@ -140,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
     @Override
     public void onDeleteTask(Task task) {
-        tasks.remove(task);
+        //tasks.remove(task);
         this.taskViewModel.deleteTask(task.getId());
         updateTasks();
     }
@@ -213,7 +223,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
      * @param task the task to be added to the list
      */
     private void addTask(@NonNull Task task) {
-        tasks.add(task);
+        //tasks.add(task);
         this.taskViewModel.createTask(task);
         updateTasks();
     }
@@ -271,20 +281,10 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         dialog = alertBuilder.create();
 
         // This instead of listener to positive button in order to avoid automatic dismiss
-        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+        dialog.setOnShowListener(dialogInterface -> {
 
-            @Override
-            public void onShow(DialogInterface dialogInterface) {
-
-                Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                button.setOnClickListener(new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View view) {
-                        onPositiveButtonClick(dialog);
-                    }
-                });
-            }
+            Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            button.setOnClickListener(view -> onPositiveButtonClick(dialog));
         });
 
         return dialog;

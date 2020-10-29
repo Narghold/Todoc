@@ -1,7 +1,7 @@
 package com.cleanup.todoc.DI;
 
-import android.arch.lifecycle.ViewModel;
-import android.arch.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.cleanup.todoc.controller.TaskViewModel;
 import com.cleanup.todoc.repository.ProjectDataRepository;

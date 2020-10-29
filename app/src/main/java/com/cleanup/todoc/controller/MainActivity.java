@@ -1,14 +1,15 @@
 package com.cleanup.todoc.controller;
 
-import android.arch.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -95,11 +96,11 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         super.onCreate(savedInstanceState);
 
         //Database
-        TodocDatabase.getInstance(this);
+        TodocDatabase todocDatabase = TodocDatabase.getInstance(this);
 
+        //Configure ViewModel
         ViewModelFactory viewModelFactory = DI.provideViewModelFactory(this);
         taskViewModel = ViewModelProviders.of(this, viewModelFactory).get(TaskViewModel.class);
-
 
         setContentView(R.layout.activity_main);
 
@@ -109,12 +110,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         listTasks.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         listTasks.setAdapter(adapter);
 
-        findViewById(R.id.fab_add_task).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showAddTaskDialog();
-            }
-        });
+        findViewById(R.id.fab_add_task).setOnClickListener(view -> showAddTaskDialog());
     }
 
     @Override
@@ -145,6 +141,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     @Override
     public void onDeleteTask(Task task) {
         tasks.remove(task);
+        this.taskViewModel.deleteTask(task.getId());
         updateTasks();
     }
 
@@ -182,9 +179,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
                         new Date().getTime()
                 );
 
-                //TodocDatabase.getInstance(this).taskDAO().insertTask(task);
                 addTask(task);
-
                 dialogInterface.dismiss();
             }
             // If name has been set, but project has not been set (this should never occur)
@@ -192,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
                 dialogInterface.dismiss();
             }
         }
-        // If dialog is aloready closed
+        // If dialog is already closed
         else {
             dialogInterface.dismiss();
         }
@@ -219,7 +214,6 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
      */
     private void addTask(@NonNull Task task) {
         tasks.add(task);
-        //TODO DAO task
         this.taskViewModel.createTask(task);
         updateTasks();
     }

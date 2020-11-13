@@ -49,15 +49,15 @@ public class Project {
      * Returns all the projects of the application.
      *
      * @return all the projects of the application
-     */
-    @NonNull
+
     public static Project[] getAllProjects() {
         return new Project[]{
                 new Project("Projet Tartampion", 0xFFEADAD1),
                 new Project("Projet Lucidia", 0xFFB4CDBA),
                 new Project("Projet Circus", 0xFFA3CED2),
         };
-    }
+    }*/
+
 
     /**
      * Returns the project with the given unique identifier, or null if no project with that
@@ -66,14 +66,14 @@ public class Project {
      * @param id the unique identifier of the project to return
      * @return the project with the given unique identifier, or null if it has not been found
      */
-    @Nullable
+    /*@Nullable
     public static Project getProjectById(long id) {
         for (Project project : getAllProjects()) {
             if (project.id == id)
                 return project;
         }
         return null;
-    }
+    }*/
 
     /**
      * Returns the unique identifier of the project.

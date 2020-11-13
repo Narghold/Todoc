@@ -44,7 +44,8 @@ public class Task {
      * @param name              the name of the task to set
      * @param creationTimestamp the timestamp when the task has been created to set
      */
-    public Task(long projectId, @NonNull String name, long creationTimestamp) {
+    public Task(long id, long projectId, @NonNull String name, long creationTimestamp) {
+        this.setId(id);
         this.setProjectId(projectId);
         this.setName(name);
         this.setCreationTimestamp(creationTimestamp);
@@ -82,10 +83,10 @@ public class Task {
      *
      * @return the project associated to the task
      */
-    @Nullable
+    /*@Nullable
     public Project getProject() {
         return Project.getProjectById(projectId);
-    }
+    }*/
 
     /**
      * Returns the name of the task.

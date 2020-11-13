@@ -2,6 +2,7 @@ package com.cleanup.todoc.controller;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -172,8 +173,10 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
             }
             // If both project and name of the task have been set
             else if (taskProject != null) {
-                
+                long id = (long) (Math.random() * 50000);
+
                 Task task = new Task(
+                        id,
                         taskProject.getId(),
                         taskName,
                         new Date().getTime()
@@ -284,12 +287,19 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
      * Sets the data of the Spinner with projects to associate to a new task
      */
     private void populateDialogSpinner() {
-        this.taskViewModel.getProjectList().observe(this, projects -> projectList = projects);
-        ArrayAdapter<Project> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, projectList);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        if (dialogSpinner != null) {
-            dialogSpinner.setAdapter(adapter);
-        }
+        Log.d("MainActivity" , "0");
+        this.taskViewModel.getProjectList().observe(this, new Observer<List<Project>>() {
+            @Override
+            public void onChanged(List<Project> projects) {
+                Log.d("MainActivity" , "onChanged");
+                ArrayAdapter<Project> adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_item, projects);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                if (dialogSpinner != null) {
+                    dialogSpinner.setAdapter(adapter);
+                }
+            }
+        });
+        Log.d("MainActivity" , "1");
     }
 
     /**

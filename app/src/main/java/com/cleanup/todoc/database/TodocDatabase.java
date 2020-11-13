@@ -49,17 +49,17 @@ public abstract class TodocDatabase extends RoomDatabase {
             ContentValues projectTartampion = new ContentValues();
             projectTartampion.put("name" , "Projet Tartampion");
             projectTartampion.put("color" , 0xFFEADAD1);
-            db.insert("Project", OnConflictStrategy.ABORT, projectTartampion);
+            db.insert("Project", OnConflictStrategy.IGNORE, projectTartampion);
 
             ContentValues projectLucidia = new ContentValues();
             projectLucidia.put("name" , "Projet Lucidia");
             projectLucidia.put("color" , 0xFFB4CDBA);
-            db.insert("Project", OnConflictStrategy.ABORT, projectLucidia);
+            db.insert("Project", OnConflictStrategy.IGNORE, projectLucidia);
 
             ContentValues projectCircus = new ContentValues();
-            projectLucidia.put("name" , "Projet Circus");
-            projectLucidia.put("color" , 0xFFA3CED2);
-            db.insert("Project", OnConflictStrategy.ABORT, projectCircus);
+            projectCircus.put("name" , "Projet Circus");
+            projectCircus.put("color" , 0xFFA3CED2);
+            db.insert("Project", OnConflictStrategy.IGNORE, projectCircus);
 
             /*ProjectDao projectDao = INSTANCE.projectDAO();
             projectDao.insertProject(new Project("Projet Tartampion", 0xFFEADAD1));

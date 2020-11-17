@@ -27,6 +27,7 @@ public class Task {
      */
     private long projectId;
 
+
     /**
      * The name of the task
      */
@@ -44,8 +45,7 @@ public class Task {
      * @param name              the name of the task to set
      * @param creationTimestamp the timestamp when the task has been created to set
      */
-    public Task(long id, long projectId, @NonNull String name, long creationTimestamp) {
-        this.setId(id);
+    public Task(long projectId, @NonNull String name, long creationTimestamp) {
         this.setProjectId(projectId);
         this.setName(name);
         this.setCreationTimestamp(creationTimestamp);
@@ -65,9 +65,7 @@ public class Task {
      *
      * @param id the unique identifier of the task to set
      */
-    private void setId(long id) {
-        this.id = id;
-    }
+    public void setId(long id) {this.id = id;}
 
     /**
      * Sets the unique identifier of the project associated to the task.

@@ -36,7 +36,6 @@ public class Project {
     /**
      * Instantiates a new Project.
      *
-     * @param id    the unique identifier of the project to set
      * @param name  the name of the project to set
      * @param color the hex (ARGB) code of the color associated to the project to set
      */
@@ -44,20 +43,6 @@ public class Project {
         this.name = name;
         this.color = color;
     }
-
-    /**
-     * Returns all the projects of the application.
-     *
-     * @return all the projects of the application
-
-    public static Project[] getAllProjects() {
-        return new Project[]{
-                new Project("Projet Tartampion", 0xFFEADAD1),
-                new Project("Projet Lucidia", 0xFFB4CDBA),
-                new Project("Projet Circus", 0xFFA3CED2),
-        };
-    }*/
-
 
     /**
      * Returns the project with the given unique identifier, or null if no project with that

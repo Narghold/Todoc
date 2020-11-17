@@ -4,6 +4,8 @@ import android.content.res.ColorStateList;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,7 @@ import com.cleanup.todoc.R;
 import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,6 +31,12 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
     @NonNull
     private List<Task> tasks;
 
+    /*
+    * List of the projects
+     */
+    @NonNull
+    private List<Project> projectList;
+
     /**
      * The listener for when a task needs to be deleted
      */
@@ -41,6 +50,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
      */
     TasksAdapter(@NonNull final List<Task> tasks, @NonNull final DeleteTaskListener deleteTaskListener) {
         this.tasks = tasks;
+        this.projectList = new ArrayList<>();
         this.deleteTaskListener = deleteTaskListener;
     }
 
@@ -51,6 +61,11 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
      */
     void updateTasks(@NonNull final List<Task> tasks) {
         this.tasks = tasks;
+        notifyDataSetChanged();
+    }
+
+    void updateProject(@NonNull List<Project> projectList){
+        this.projectList = projectList;
         notifyDataSetChanged();
     }
 
@@ -147,15 +162,16 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
             lblTaskName.setText(task.getName());
             imgDelete.setTag(task);
 
-            /*final Project taskProject = task.getProject();
+            final long projectId = task.getProjectId();
+            final Project taskProject = projectList.get((int) (projectId - 1));     //-1 cause index start at 0
+            final int color = taskProject.getColor();
             if (taskProject != null) {
-                imgProject.setSupportImageTintList(ColorStateList.valueOf(taskProject.getColor()));
+                imgProject.setSupportImageTintList(ColorStateList.valueOf(color));
                 lblProjectName.setText(taskProject.getName());
             } else {
                 imgProject.setVisibility(View.INVISIBLE);
                 lblProjectName.setText("");
-            }*/
-
+            }
         }
     }
 }

@@ -41,6 +41,7 @@ public abstract class TodocDatabase extends RoomDatabase {
         return INSTANCE;
     }
 
+    //Prepopulate DB with different projects
     private static final RoomDatabase.Callback prepopulateDatabase = new Callback() {
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
@@ -60,18 +61,6 @@ public abstract class TodocDatabase extends RoomDatabase {
             projectCircus.put("name" , "Projet Circus");
             projectCircus.put("color" , 0xFFA3CED2);
             db.insert("Project", OnConflictStrategy.IGNORE, projectCircus);
-
-            /*ProjectDao projectDao = INSTANCE.projectDAO();
-            projectDao.insertProject(new Project("Projet Tartampion", 0xFFEADAD1));
-            projectDao.insertProject(new Project("Projet Lucidia", 0xFFB4CDBA));
-            projectDao.insertProject(new Project("Projet Circus", 0xFFA3CED2));
-            */
-
-            /*
-            new Project("Projet Tartampion", 0xFFEADAD1),
-            new Project("Projet Lucidia", 0xFFB4CDBA),
-            new Project("Projet Circus", 0xFFA3CED2),
-            */
         }
     };
 }

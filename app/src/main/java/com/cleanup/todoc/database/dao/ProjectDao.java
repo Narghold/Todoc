@@ -13,15 +13,21 @@ import java.util.List;
 @Dao
 public interface ProjectDao {
 
+    /*  Insert a project in DB
+    *   SQL: INSERT INTO Project VALUES project
+    */
     @Insert(onConflict = OnConflictStrategy.ABORT)
     void insertProject(Project project);
 
+    //Getter for project list in DB
     @Query("SELECT * FROM Project")
     LiveData<List<Project>> getProjectList();
 
+    //Getter for one project with his id
     @Query("SELECT * FROM Project WHERE id= :projectId")
     LiveData<Project> getProject(long projectId);
 
+    //Delete one project with his id
     @Query("DELETE FROM Project WHERE id= :projectId")
     void deleteProject(long projectId);
 }

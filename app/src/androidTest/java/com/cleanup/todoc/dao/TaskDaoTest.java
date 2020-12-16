@@ -28,16 +28,17 @@ public class TaskDaoTest {
     private TodocDatabase database;
 
     //Set projects for tests
-    private static long PROJECT_ID_1 = 1;
-    private static Project PROJECT_1 = new Project(PROJECT_ID_1, "PROJECT_1", 1);
-    private static Project PROJECT_2 = new Project(2, "PROJECT_2", 2);
+    private static final long PROJECT_ID_1 = 1;
+    private static final long PROJECT_ID_2 = 2;
+    private static final Project PROJECT_1 = new Project("PROJECT_1", 1);
+    private static final Project PROJECT_2 = new Project("PROJECT_2", 2);
 
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
 
     @Before
     public void initDb(){
-        this.database = Room.inMemoryDatabaseBuilder(InstrumentationRegistry.getContext(),
+        this.database = Room.inMemoryDatabaseBuilder(InstrumentationRegistry.getInstrumentation().getContext(),
                 TodocDatabase.class)
                 .allowMainThreadQueries()
                 .build();
@@ -51,12 +52,11 @@ public class TaskDaoTest {
     }
 
     //Data set for tests
-    private static long TASK_ID_1 = 1;
-    private static Task TASK_TEST_1 = new Task(TASK_ID_1, 1, "TASK_TEST_1", 1);
-    private static long TASK_ID_2 = 2;
-    private static Task TASK_TEST_2 = new Task(TASK_ID_2, 1, "TASK_TEST_2", 2);
-    private static long TASK_ID_3 = 3;
-    private static Task TASK_TEST_3 = new Task(TASK_ID_3, 2, "TASK_TEST_3", 3);
+    private static final long TASK_ID_1 = 1;
+    private static final Task TASK_TEST_1 = new Task(1, "TASK_TEST_1", 1);
+    private static final long TASK_ID_2 = 2;
+    private static final Task TASK_TEST_2 = new Task(1, "TASK_TEST_2", 2);
+    private static final Task TASK_TEST_3 = new Task(2, "TASK_TEST_3", 3);
 
     @Test
     public void insertAndGetTask() throws InterruptedException {

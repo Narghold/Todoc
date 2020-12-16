@@ -42,7 +42,7 @@ public abstract class TodocDatabase extends RoomDatabase {
     }
 
     //Prepopulate DB with different projects
-    private static final RoomDatabase.Callback prepopulateDatabase = new Callback() {
+    public static final RoomDatabase.Callback prepopulateDatabase = new Callback() {
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
             super.onCreate(db);

@@ -87,12 +87,15 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     //ViewModel
     private TaskViewModel taskViewModel;
 
+    //Database
+    public TodocDatabase todocDatabase;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         //Database
-        TodocDatabase todocDatabase = TodocDatabase.getInstance(this);
+        todocDatabase = TodocDatabase.getInstance(this);
 
         //Configure ViewModel
         ViewModelFactory viewModelFactory = DI.provideViewModelFactory(this);

@@ -1,13 +1,24 @@
 package com.cleanup.todoc;
 
+import androidx.annotation.NonNull;
+import androidx.room.OnConflictStrategy;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
+import androidx.sqlite.db.SupportSQLiteDatabase;
+import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.ContentValues;
 import android.view.View;
 import android.widget.TextView;
 
 import com.cleanup.todoc.controller.MainActivity;
+import com.cleanup.todoc.database.TodocDatabase;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,14 +35,41 @@ import static org.junit.Assert.assertThat;
 
 /**
  * Instrumented test, which will execute on an Android device.
- *
+ * @author Yann DUBOIS
  * @author Gaëtan HERFRAY
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 @RunWith(AndroidJUnit4.class)
 public class MainActivityInstrumentedTest {
+
+    /*
+    *
+    *                    WARNING
+    * MAKE SURE THE APP DATA IS CLEAR BEFORE TESTING
+    *
+    */
+
+
     @Rule
     public ActivityTestRule<MainActivity> rule = new ActivityTestRule<>(MainActivity.class);
+
+    TodocDatabase todocDatabase = ;
+
+    TodocDatabase database;
+
+    @Before
+    public void initDb(){
+        this.database = Room.inMemoryDatabaseBuilder(InstrumentationRegistry.getInstrumentation().getContext(),
+                TodocDatabase.class)
+                .allowMainThreadQueries()
+                .addCallback(TodocDatabase.prepopulateDatabase)
+                .build();
+    }
+
+    @After
+    public void closeDb(){
+        database.close();
+    }
 
     @Test
     public void addAndRemoveTask() {
@@ -60,7 +98,6 @@ public class MainActivityInstrumentedTest {
 
     @Test
     public void sortTasks() {
-        MainActivity activity = rule.getActivity();
 
         onView(withId(R.id.fab_add_task)).perform(click());
         onView(withId(R.id.txt_task_name)).perform(replaceText("aaa Tâche example"));

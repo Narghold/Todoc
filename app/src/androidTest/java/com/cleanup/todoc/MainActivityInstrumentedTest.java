@@ -1,6 +1,11 @@
 package com.cleanup.todoc;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
@@ -14,14 +19,21 @@ import android.content.ContentValues;
 import android.view.View;
 import android.widget.TextView;
 
+import com.cleanup.todoc.DI.DI;
+import com.cleanup.todoc.DI.ViewModelFactory;
 import com.cleanup.todoc.controller.MainActivity;
+import com.cleanup.todoc.controller.TaskViewModel;
 import com.cleanup.todoc.database.TodocDatabase;
+import com.cleanup.todoc.model.Task;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -52,28 +64,23 @@ public class MainActivityInstrumentedTest {
 
     @Rule
     public ActivityTestRule<MainActivity> rule = new ActivityTestRule<>(MainActivity.class);
-
-    TodocDatabase todocDatabase = ;
+    MainActivity activity = rule.getActivity();
 
     TodocDatabase database;
+    TaskViewModel taskViewModel;
 
     @Before
     public void initDb(){
-        this.database = Room.inMemoryDatabaseBuilder(InstrumentationRegistry.getInstrumentation().getContext(),
-                TodocDatabase.class)
-                .allowMainThreadQueries()
-                .addCallback(TodocDatabase.prepopulateDatabase)
-                .build();
+        //Configure ViewModel
+        ViewModelFactory viewModelFactory = DI.provideViewModelFactory(InstrumentationRegistry.getInstrumentation().getContext());
+        taskViewModel = ViewModelProviders.of(activity , viewModelFactory).get(TaskViewModel.class);
+
+        taskViewModel.clearTaskList();
     }
 
-    @After
-    public void closeDb(){
-        database.close();
-    }
 
     @Test
     public void addAndRemoveTask() {
-        MainActivity activity = rule.getActivity();
         TextView lblNoTask = activity.findViewById(R.id.lbl_no_task);
         RecyclerView listTasks = activity.findViewById(R.id.list_tasks);
 

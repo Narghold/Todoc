@@ -33,4 +33,8 @@ public interface TaskDao {
     //Getter for task with the project attached
     @Query("SELECT * FROM Task WHERE projectId= :projectId")
     LiveData<List<Task>> getTaskListFromProject(long projectId);
+
+    //Clear all tasks
+    @Query("DELETE FROM Task")
+    void clearTaskList();
 }

@@ -112,4 +112,17 @@ public class TaskDaoTest {
         assertFalse(taskListFromProject.contains(TASK_TEST_3));
     }
 
+    @Test
+    public void insertAndClearTaskList() throws InterruptedException {
+        //Adding tasks
+        this.database.taskDAO().insertTask(TASK_TEST_1);
+        this.database.taskDAO().insertTask(TASK_TEST_2);
+        this.database.taskDAO().insertTask(TASK_TEST_3);
+        //Clear Task table
+        this.database.taskDAO().clearTaskList();
+        //Get task list
+        List<Task> taskList = LiveDataTestUtil.getValue(this.database.taskDAO().getTaskList());
+        //Test
+        assertTrue(taskList.isEmpty());
+    }
 }

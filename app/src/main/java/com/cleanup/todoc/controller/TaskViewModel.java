@@ -29,15 +29,15 @@ public class TaskViewModel extends ViewModel {
     }
 
     public void createTask(Task task){
-        executor.execute(() -> {
-            taskDataSource.createTask(task);
-        });
+        executor.execute(() -> taskDataSource.createTask(task));
     }
 
     public void deleteTask(long taskId){
-        executor.execute(() -> {
-            taskDataSource.deleteTask(taskId);
-        });
+        executor.execute(() -> taskDataSource.deleteTask(taskId));
+    }
+
+    public void clearTaskList(){
+        executor.execute(taskDataSource::clearTaskList);
     }
 
     public LiveData<List<Project>> getProjectList(){
@@ -45,8 +45,6 @@ public class TaskViewModel extends ViewModel {
     }
 
     public void createProject(Project project){
-        executor.execute(() -> {
-            projectDataSource.createProject(project);
-        });
+        executor.execute(() -> projectDataSource.createProject(project));
     }
 }

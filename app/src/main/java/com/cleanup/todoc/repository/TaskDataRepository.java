@@ -40,4 +40,9 @@ public class TaskDataRepository {
     public void deleteTask(long taskId){
         taskDao.deleteTask(taskId);
     }
+
+    //Clear task list
+    public void clearTaskList(){
+        taskDao.clearTaskList();
+    }
 }

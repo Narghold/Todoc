@@ -15,13 +15,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.cleanup.todoc.DI.DI;
-import com.cleanup.todoc.DI.ViewModelFactory;
+import com.cleanup.todoc.di.DI;
+import com.cleanup.todoc.di.ViewModelFactory;
 import com.cleanup.todoc.R;
 import com.cleanup.todoc.database.TodocDatabase;
 import com.cleanup.todoc.model.Project;
@@ -213,33 +212,30 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
      * Updates the list of tasks in the UI
      */
     void updateTasks() {
-        this.taskViewModel.getTaskList().observe(this, new Observer<List<Task>>() {
-            @Override
-            public void onChanged(List<Task> tasks) {
-                if (tasks.size() == 0) {
-                    lblNoTasks.setVisibility(View.VISIBLE);
-                    listTasks.setVisibility(View.GONE);
-                } else {
-                    lblNoTasks.setVisibility(View.GONE);
-                    listTasks.setVisibility(View.VISIBLE);
-                    switch (sortMethod) {
-                        case ALPHABETICAL:
-                            Collections.sort(tasks, new Task.TaskAZComparator());
-                            break;
-                        case ALPHABETICAL_INVERTED:
-                            Collections.sort(tasks, new Task.TaskZAComparator());
-                            break;
-                        case RECENT_FIRST:
-                            Collections.sort(tasks, new Task.TaskRecentComparator());
-                            break;
-                        case OLD_FIRST:
-                            Collections.sort(tasks, new Task.TaskOldComparator());
-                            break;
-                        case NONE:
-                            break;
-                    }
-                    adapter.updateTasks(tasks);
+        this.taskViewModel.getTaskList().observe(this, tasks -> {
+            if (tasks.size() == 0) {
+                lblNoTasks.setVisibility(View.VISIBLE);
+                listTasks.setVisibility(View.GONE);
+            } else {
+                lblNoTasks.setVisibility(View.GONE);
+                listTasks.setVisibility(View.VISIBLE);
+                switch (sortMethod) {
+                    case ALPHABETICAL:
+                        Collections.sort(tasks, new Task.TaskAZComparator());
+                        break;
+                    case ALPHABETICAL_INVERTED:
+                        Collections.sort(tasks, new Task.TaskZAComparator());
+                        break;
+                    case RECENT_FIRST:
+                        Collections.sort(tasks, new Task.TaskRecentComparator());
+                        break;
+                    case OLD_FIRST:
+                        Collections.sort(tasks, new Task.TaskOldComparator());
+                        break;
+                    case NONE:
+                        break;
                 }
+                adapter.updateTasks(tasks);
             }
         });
     }
@@ -256,13 +252,10 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         alertBuilder.setTitle(R.string.add_task);
         alertBuilder.setView(R.layout.dialog_add_task);
         alertBuilder.setPositiveButton(R.string.add, null);
-        alertBuilder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialogInterface) {
-                dialogEditText = null;
-                dialogSpinner = null;
-                dialog = null;
-            }
+        alertBuilder.setOnDismissListener(dialogInterface -> {
+            dialogEditText = null;
+            dialogSpinner = null;
+            dialog = null;
         });
 
         dialog = alertBuilder.create();

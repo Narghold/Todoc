@@ -9,7 +9,6 @@ import androidx.room.RoomDatabase;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.util.Log;
 
 import com.cleanup.todoc.database.dao.ProjectDao;
 import com.cleanup.todoc.database.dao.TaskDao;

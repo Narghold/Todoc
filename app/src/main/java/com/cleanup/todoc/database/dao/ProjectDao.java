@@ -3,7 +3,6 @@ package com.cleanup.todoc.database.dao;
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
-import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import com.cleanup.todoc.model.Project;
@@ -16,7 +15,7 @@ public interface ProjectDao {
     /*  Insert a project in DB
     *   SQL: INSERT INTO Project VALUES project
     */
-    @Insert(onConflict = OnConflictStrategy.ABORT)
+    @Insert()
     void insertProject(Project project);
 
     //Getter for project list in DB

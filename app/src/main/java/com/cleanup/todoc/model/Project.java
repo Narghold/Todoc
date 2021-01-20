@@ -1,11 +1,9 @@
 package com.cleanup.todoc.model;
 
-import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 /**
  * <p>Models for project in which tasks are included.</p>

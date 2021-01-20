@@ -5,7 +5,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +47,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
      *
      * @param tasks the list of tasks the adapter deals with to set
      */
+    @SuppressWarnings("JavadocReference")
     TasksAdapter(@NonNull final DeleteTaskListener deleteTaskListener) {
         this.tasks = new ArrayList<>();
         this.projectList = new ArrayList<>();
@@ -57,7 +57,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
     /**
      * Updates the list of tasks the adapter deals with.
      *
-     * @param tasks the list of tasks the adapter deals with to set
+     * @param tasks:The list of tasks the adapter deals with to set
      */
     void updateTasks(@NonNull final List<Task> tasks) {
         this.tasks = tasks;
@@ -103,6 +103,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
      *
      * @author Gaëtan HERFRAY
      */
+    @SuppressWarnings("ConstantConditions")
     class TaskViewHolder extends RecyclerView.ViewHolder {
         /**
          * The circle icon showing the color of the project

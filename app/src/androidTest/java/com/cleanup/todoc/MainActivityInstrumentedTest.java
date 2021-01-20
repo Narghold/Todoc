@@ -1,43 +1,20 @@
 package com.cleanup.todoc;
 
-import androidx.annotation.NonNull;
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
-import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.lifecycle.ViewModelStoreOwner;
-import androidx.room.OnConflictStrategy;
-import androidx.room.Room;
-import androidx.room.RoomDatabase;
-import androidx.sqlite.db.SupportSQLiteDatabase;
-import androidx.test.core.app.ApplicationProvider;
-import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Instrumentation;
-import android.content.ContentValues;
 import android.view.View;
 import android.widget.TextView;
 
-import com.cleanup.todoc.DI.DI;
-import com.cleanup.todoc.DI.ViewModelFactory;
 import com.cleanup.todoc.controller.MainActivity;
-import com.cleanup.todoc.controller.TaskViewModel;
-import com.cleanup.todoc.database.TodocDatabase;
-import com.cleanup.todoc.model.Task;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -59,7 +36,7 @@ import static org.junit.Assert.assertThat;
 public class MainActivityInstrumentedTest {
 
     @Rule
-    public ActivityTestRule<MainActivity> rule = new ActivityTestRule<>(MainActivity.class);
+    public final ActivityTestRule<MainActivity> rule = new ActivityTestRule<>(MainActivity.class);
 
     @Before
     public void clearDatabase(){
@@ -82,7 +59,7 @@ public class MainActivityInstrumentedTest {
         // Check that recyclerView is displayed
         assertThat(listTasks.getVisibility(), equalTo(View.VISIBLE));
         // Check that it contains one element only
-        assertThat(listTasks.getAdapter().getItemCount(), equalTo(1));
+        assertThat(Objects.requireNonNull(listTasks.getAdapter()).getItemCount(), equalTo(1));
 
         onView(withId(R.id.img_delete)).perform(click());
 
@@ -150,6 +127,6 @@ public class MainActivityInstrumentedTest {
                 .check(matches(withText("zzz Tâche example")));
         onView(withRecyclerView(R.id.list_tasks).atPositionOnView(2, R.id.lbl_task_name))
                 .check(matches(withText("aaa Tâche example")));
-        
+
     }
 }

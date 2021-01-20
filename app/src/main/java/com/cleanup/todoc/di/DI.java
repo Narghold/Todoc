@@ -1,4 +1,4 @@
-package com.cleanup.todoc.DI;
+package com.cleanup.todoc.di;
 
 import android.content.Context;
 

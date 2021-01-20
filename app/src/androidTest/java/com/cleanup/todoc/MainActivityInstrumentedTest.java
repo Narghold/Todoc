@@ -1,7 +1,9 @@
 package com.cleanup.todoc;
 
 import androidx.annotation.NonNull;
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
@@ -10,11 +12,13 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
+import androidx.test.core.app.ApplicationProvider;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Instrumentation;
 import android.content.ContentValues;
 import android.view.View;
 import android.widget.TextView;
@@ -54,33 +58,24 @@ import static org.junit.Assert.assertThat;
 @RunWith(AndroidJUnit4.class)
 public class MainActivityInstrumentedTest {
 
-    /*
-    *
-    *                    WARNING
-    * MAKE SURE THE APP DATA IS CLEAR BEFORE TESTING
-    *
-    */
-
-
     @Rule
     public ActivityTestRule<MainActivity> rule = new ActivityTestRule<>(MainActivity.class);
-    MainActivity activity = rule.getActivity();
-
-    TodocDatabase database;
-    TaskViewModel taskViewModel;
+    
 
     @Before
-    public void initDb(){
-        //Configure ViewModel
-        ViewModelFactory viewModelFactory = DI.provideViewModelFactory(InstrumentationRegistry.getInstrumentation().getContext());
-        taskViewModel = ViewModelProviders.of(activity , viewModelFactory).get(TaskViewModel.class);
+    public void clearDatabase(){
+        MainActivity activity = rule.getActivity();
+        TextView lblNoTask = activity.findViewById(R.id.lbl_no_task);
+        RecyclerView listTasks = activity.findViewById(R.id.list_tasks);
 
-        taskViewModel.clearTaskList();
+        while(lblNoTask.getVisibility() == View.GONE){
+            onView(withRecyclerView(R.id.list_tasks).atPositionOnView(0,R.id.img_delete)).perform(click());
+        }
     }
-
 
     @Test
     public void addAndRemoveTask() {
+        MainActivity activity = rule.getActivity();
         TextView lblNoTask = activity.findViewById(R.id.lbl_no_task);
         RecyclerView listTasks = activity.findViewById(R.id.list_tasks);
 
@@ -105,7 +100,6 @@ public class MainActivityInstrumentedTest {
 
     @Test
     public void sortTasks() {
-
         onView(withId(R.id.fab_add_task)).perform(click());
         onView(withId(R.id.txt_task_name)).perform(replaceText("aaa Tâche example"));
         onView(withId(android.R.id.button1)).perform(click());
@@ -162,5 +156,10 @@ public class MainActivityInstrumentedTest {
                 .check(matches(withText("zzz Tâche example")));
         onView(withRecyclerView(R.id.list_tasks).atPositionOnView(2, R.id.lbl_task_name))
                 .check(matches(withText("aaa Tâche example")));
+
+        //Delete tasks
+        /*onView(withRecyclerView(R.id.list_tasks).atPositionOnView(0,R.id.img_delete)).perform(click());
+        onView(withRecyclerView(R.id.list_tasks).atPositionOnView(0,R.id.img_delete)).perform(click());
+        onView(withRecyclerView(R.id.list_tasks).atPositionOnView(0,R.id.img_delete)).perform(click());*/
     }
 }

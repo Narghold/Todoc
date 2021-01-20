@@ -64,11 +64,7 @@ public class MainActivityInstrumentedTest {
     @Before
     public void clearDatabase(){
         MainActivity activity = rule.getActivity();
-        TextView lblNoTask = activity.findViewById(R.id.lbl_no_task);
-        
-        while(lblNoTask.getVisibility() == View.GONE){
-            onView(withRecyclerView(R.id.list_tasks).atPositionOnView(0,R.id.img_delete)).perform(click());
-        }
+        activity.todocDatabase.taskDAO().clearTaskList();
     }
 
     @Test
@@ -154,10 +150,6 @@ public class MainActivityInstrumentedTest {
                 .check(matches(withText("zzz Tâche example")));
         onView(withRecyclerView(R.id.list_tasks).atPositionOnView(2, R.id.lbl_task_name))
                 .check(matches(withText("aaa Tâche example")));
-
-        //Delete tasks
-        /*onView(withRecyclerView(R.id.list_tasks).atPositionOnView(0,R.id.img_delete)).perform(click());
-        onView(withRecyclerView(R.id.list_tasks).atPositionOnView(0,R.id.img_delete)).perform(click());
-        onView(withRecyclerView(R.id.list_tasks).atPositionOnView(0,R.id.img_delete)).perform(click());*/
+        
     }
 }

@@ -60,14 +60,12 @@ public class MainActivityInstrumentedTest {
 
     @Rule
     public ActivityTestRule<MainActivity> rule = new ActivityTestRule<>(MainActivity.class);
-    
 
     @Before
     public void clearDatabase(){
         MainActivity activity = rule.getActivity();
         TextView lblNoTask = activity.findViewById(R.id.lbl_no_task);
-        RecyclerView listTasks = activity.findViewById(R.id.list_tasks);
-
+        
         while(lblNoTask.getVisibility() == View.GONE){
             onView(withRecyclerView(R.id.list_tasks).atPositionOnView(0,R.id.img_delete)).perform(click());
         }

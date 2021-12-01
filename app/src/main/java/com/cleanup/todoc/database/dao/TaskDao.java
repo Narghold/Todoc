@@ -22,7 +22,7 @@ public interface TaskDao {
 
     /*  Insert a task in DB
     *   SQL: INSERT INTO Task VALUES task
-     */
+    */
     @Insert
     void insertTask(Task task);
 
@@ -34,7 +34,9 @@ public interface TaskDao {
     @Query("SELECT * FROM Task WHERE projectId= :projectId")
     LiveData<List<Task>> getTaskListFromProject(long projectId);
 
-    //Clear all tasks
+    /*  Clear all tasks
+    *   Usefull for tests
+    */
     @Query("DELETE FROM Task")
     void clearTaskList();
 }
